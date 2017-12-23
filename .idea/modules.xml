@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/abcpermission-plugin.iml" filepath="$PROJECT_DIR$/abcpermission-plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin/abcpermission-plugin-abcpermission-plugin.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin/abcpermission-plugin-abcpermission-plugin.iml" group="abcpermission-plugin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin/abcpermission-plugin-abcpermission-plugin_main.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin/abcpermission-plugin-abcpermission-plugin_main.iml" group="abcpermission-plugin" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin/abcpermission-plugin-abcpermission-plugin_test.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin/abcpermission-plugin-abcpermission-plugin_test.iml" group="abcpermission-plugin" />
+    </modules>
+  </component>
+</project>

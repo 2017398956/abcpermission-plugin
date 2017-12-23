@@ -1,0 +1,4 @@
+rootProject.name = 'abcpermission-plugin'
+include 'plugin'
+findProject(':plugin')?.name = 'abcpermission-plugin'
+
