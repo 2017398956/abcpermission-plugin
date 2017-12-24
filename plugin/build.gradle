@@ -1,6 +1,7 @@
 apply plugin: 'maven'
 apply plugin: 'groovy'
-group='com.github.2017398956.AbcPermission'
+apply plugin: 'java'
+group='com.github.2017398956'
 
 buildscript {
     repositories {
