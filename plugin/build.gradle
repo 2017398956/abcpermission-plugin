@@ -1,8 +1,6 @@
-apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.2017398956.AbcPermission'
-
+apply plugin: 'maven'
 apply plugin: 'groovy'
-// apply plugin: 'maven'
+group='com.github.2017398956.AbcPermission'
 
 buildscript {
     repositories {
