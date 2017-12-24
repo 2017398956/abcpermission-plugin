@@ -1,5 +1,5 @@
-group 'personal.nfl.permission'
-version '1.0'
+//group 'personal.nfl.permission'
+//version '1.0'
 buildscript {
 
     repositories {
