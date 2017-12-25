@@ -9,6 +9,27 @@ import org.gradle.api.Task
 
 class AbcPermissionPlugin implements Plugin<Project> {
     void apply(Project project) {
+
+        project.repositories.maven {
+            'https://jitpack.io'
+        }
+
+        project.dependencies.add("implementation",
+                "com.github.2017398956:AbcPermission:1.6", {
+            "exclude module: 'permissionAnnotation'"
+            "exclude module: 'permissionCompiler'"
+        })
+        project.dependencies.add("provided",
+                "com.github.2017398956:AbcPermission:1.6", {
+            "exclude module: 'permissionSupport'"
+            "exclude module: 'permissionCompiler'"
+        })
+        project.dependencies.add("annotationProcessor",
+                "com.github.2017398956:AbcPermission:1.6", {
+            "exclude module: 'permissionSupport'"
+            "exclude module: 'permissionCompiler'"
+        })
+
         if (project.hasProperty('android') && project.android != null) {
             if (project.android.hasProperty('applicationVariants')
                     && project.android.applicationVariants != null) {
