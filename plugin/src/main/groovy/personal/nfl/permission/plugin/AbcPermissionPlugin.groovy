@@ -20,7 +20,7 @@ class AbcPermissionPlugin implements Plugin<Project> {
                 exclude module: 'permissionCompiler'
 //                exclude module: 'app'
             }
-            provided("com.github.2017398956:AbcPermission:1.6.3") {
+            compileOnly("com.github.2017398956:AbcPermission:1.6.3") {
                 exclude module: 'permissionSupport'
                 exclude module: 'permissionCompiler'
 //                exclude module: 'app'
