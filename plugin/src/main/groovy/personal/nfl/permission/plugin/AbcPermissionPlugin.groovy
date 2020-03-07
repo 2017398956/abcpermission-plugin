@@ -15,17 +15,17 @@ class AbcPermissionPlugin implements Plugin<Project> {
         }
 
         project.dependencies {
-            implementation("com.github.2017398956:AbcPermission:1.6.3") {
+            implementation("com.github.2017398956:AbcPermission:1.6.4") {
                 exclude module: 'permissionAnnotation'
                 exclude module: 'permissionCompiler'
 //                exclude module: 'app'
             }
-            compileOnly("com.github.2017398956:AbcPermission:1.6.3") {
+            compileOnly("com.github.2017398956:AbcPermission:1.6.4") {
                 exclude module: 'permissionSupport'
                 exclude module: 'permissionCompiler'
 //                exclude module: 'app'
             }
-            annotationProcessor("com.github.2017398956:AbcPermission:1.6.3") {
+            annotationProcessor("com.github.2017398956:AbcPermission:1.6.4") {
                 exclude module: 'permissionSupport'
 //                exclude module: 'app'
             }
@@ -35,13 +35,13 @@ class AbcPermissionPlugin implements Plugin<Project> {
             if (project.android.hasProperty('applicationVariants')
                     && project.android.applicationVariants != null) {
                 project.android.applicationVariants.all { variant ->
-                    doLast(variant.getJavaCompiler())
+                    doLast(variant.getJavaCompileProvider().get())
                 }
             }
             if (project.android.hasProperty('libraryVariants')
                     && project.android.libraryVariants != null) {
                 project.android.libraryVariants.all { variant ->
-                    doLast(variant.getJavaCompiler())
+                    doLast(variant.getJavaCompileProvider().get())
                 }
             }
         }
