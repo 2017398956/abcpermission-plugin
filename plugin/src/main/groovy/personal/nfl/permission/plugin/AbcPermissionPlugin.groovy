@@ -16,19 +16,19 @@ class AbcPermissionPlugin implements Plugin<Project> {
 
         project.dependencies {
             // implementation ('com.github.2017398956:AbcPermission:permissionSupport:1.6.5')
-            implementation("com.github.2017398956:AbcPermission:1.6.5") {
+            implementation("com.github.2017398956:AbcPermission:1.6.6") {
                 exclude module: 'permissionAnnotation'
                 exclude module: 'permissionCompiler'
 //                exclude module: 'app'
             }
             // compileOnly ('com.github.2017398956:AbcPermission:permissionAnnotation:1.6.5')
-            compileOnly("com.github.2017398956:AbcPermission:1.6.5") {
+            compileOnly("com.github.2017398956:AbcPermission:1.6.6") {
                 exclude module: 'permissionSupport'
                 exclude module: 'permissionCompiler'
 //                exclude module: 'app'
             }
             // annotationProcessor ('com.github.2017398956:AbcPermission:permissionCompiler:1.6.5')
-            annotationProcessor("com.github.2017398956:AbcPermission:1.6.5") {
+            annotationProcessor("com.github.2017398956:AbcPermission:1.6.6") {
                 exclude module: 'permissionSupport'
 //                exclude module: 'app'
             }
