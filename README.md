@@ -1,11 +1,12 @@
 # abcpermission-plugin
 
-[![Release Version](https://img.shields.io/badge/release-1.3.6-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
+[![Release Version](https://img.shields.io/badge/release-1.3.9-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
 
 方便 [AbcPermission](https://github.com/2017398956/AbcPermission "AbcPermission") 接入的插件
 
 **更新日志：**
 
+- **1.3.9**  update
 - **1.3.6**  支持 AndroidX
 
 - **1.3.5**  适配 gradle 3.0+
