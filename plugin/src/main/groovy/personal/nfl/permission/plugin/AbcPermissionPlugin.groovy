@@ -6,32 +6,56 @@ import org.aspectj.tools.ajc.Main
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import personal.nfl.permission.plugin.utils.FileUtil
 
 class AbcPermissionPlugin implements Plugin<Project> {
+
+    private String sourceJDK = "1.8"
+    private String targetJDK = "1.8"
+
     void apply(Project project) {
 
         project.repositories.maven {
             url 'https://jitpack.io'
         }
+        // 默认使用 java 的注解方式
+        String annotationMethod = "annotationProcessor"
+        if (project.plugins.findPlugin("kotlin-kapt") != null) {
+            // 支持 kotlin
+            // 如果在 kotlin 代码中使用了注解的方式生成代码，那么需要在
+            // apply plugin: 'kotlin-kapt' 之后添加 apply plugin: 'abcpermission.plugin'
+            // 顺序颠倒后将无法正常运行
+            annotationMethod = "kapt"
+        } else {
+            // 使用默认的 annotationProcessor
+        }
 
-        project.dependencies {
-            // implementation ('com.github.2017398956:AbcPermission:permissionSupport:1.6.5')
-            implementation("com.github.2017398956:AbcPermission:1.6.8") {
-                exclude module: 'permissionAnnotation'
-                exclude module: 'permissionCompiler'
-//                exclude module: 'app'
+        project.dependencies.add("implementation",
+                "com.github.2017398956:AbcPermission:1.6.8", {
+            "exclude module: 'permissionAnnotation'"
+            "exclude module: 'permissionCompiler'"
+        })
+        project.dependencies.add("provided",
+                "com.github.2017398956:AbcPermission:1.6.8", {
+            "exclude module: 'permissionSupport'"
+            "exclude module: 'permissionCompiler'"
+        })
+        project.dependencies.add(annotationMethod,
+                "com.github.2017398956:AbcPermission:1.6.8", {
+            "exclude module: 'permissionSupport'"
+            "exclude module: 'permissionCompiler'"
+        })
+        // 获取编译版本
+        if (project.hasProperty('android') && project.android != null) {
+            if (project.android.hasProperty('compileOptions') && project.android.compileOptions != null) {
+                if (project.android.compileOptions.hasProperty('targetCompatibility') && project.android.compileOptions.targetCompatibility != null) {
+                    targetJDK = project.android.compileOptions.properties.get('targetCompatibility')
+                }
+                if (project.android.compileOptions.hasProperty('sourceCompatibility') && project.android.compileOptions.sourceCompatibility != null) {
+                    sourceJDK = project.android.compileOptions.properties.get('sourceCompatibility')
+                }
             }
-            // compileOnly ('com.github.2017398956:AbcPermission:permissionAnnotation:1.6.5')
-            compileOnly("com.github.2017398956:AbcPermission:1.6.8") {
-                exclude module: 'permissionSupport'
-                exclude module: 'permissionCompiler'
-//                exclude module: 'app'
-            }
-            // annotationProcessor ('com.github.2017398956:AbcPermission:permissionCompiler:1.6.5')
-            annotationProcessor("com.github.2017398956:AbcPermission:1.6.8") {
-                exclude module: 'permissionSupport'
-//                exclude module: 'app'
-            }
+
         }
 
         if (project.hasProperty('android') && project.android != null) {
@@ -52,15 +76,40 @@ class AbcPermissionPlugin implements Plugin<Project> {
 
     private void doLast(Task javaCompile) {
         javaCompile.doLast {
-            String[] args = ["-showWeaveInfo",
-                             "-1.5",
-                             "-inpath", javaCompile.destinationDir.toString(),
-                             "-aspectpath", javaCompile.classpath.asPath,
-                             "-d", javaCompile.destinationDir.toString(),
-                             "-classpath", javaCompile.classpath.asPath,
-                             "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
             MessageHandler handler = new MessageHandler(true)
-            new Main().run(args, handler)
+            String aspectPath = javaCompile.classpath.asPath
+            String inPath = javaCompile.destinationDir.toString()
+            String dPath = javaCompile.destinationDir.toString();
+            String classpath = javaCompile.classpath.asPath
+            // 配置 kotlin 相关参数
+            String kotlinInPath = ""
+            if (dPath.contains("debug\\classes")) {
+                kotlinInPath = javaCompile.temporaryDir.getParentFile().path + File.separator + "kotlin-classes" + File.separator + "debug"
+            } else {
+                kotlinInPath = javaCompile.temporaryDir.getParentFile().path + File.separator + "kotlin-classes" + File.separator + "release"
+            }
+            // java 的 class 文件实现 aop
+            String[] javacArgs = ["-showWeaveInfo",
+                                  "-source", sourceJDK,
+                                  "-target", targetJDK,
+                                  "-inpath", kotlinInPath + ";" + inPath,
+                                  "-aspectpath", aspectPath,
+                                  "-d", dPath,
+                                  "-classpath", classpath,
+                                  "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
+            new Main().run(javacArgs, handler)
+            File[] kotlinClassFiles = FileUtil.listFiles(kotlinInPath, true)
+            File javacKotlinFile
+            for (File temp : kotlinClassFiles) {
+                if (temp.isFile() && temp.getName().endsWith(".class")) {
+                    javacKotlinFile = new File(inPath + File.separator + temp.absolutePath.replace(kotlinInPath, ""))
+                    if (null != javacKotlinFile && javacKotlinFile.exists()) {
+                        FileUtil.delete(temp)
+                        FileUtil.copyFile(javacKotlinFile, temp)
+                        FileUtil.delete(javacKotlinFile)
+                    }
+                }
+            }
 
             def log = project.logger
             for (IMessage message : handler.getMessages(null, true)) {
@@ -69,14 +118,14 @@ class AbcPermissionPlugin implements Plugin<Project> {
                     case IMessage.ERROR:
                     case IMessage.FAIL:
                         log.error message.message, message.thrown
-                        break
+                        break;
                     case IMessage.WARNING:
                     case IMessage.INFO:
                         log.info message.message, message.thrown
-                        break
+                        break;
                     case IMessage.DEBUG:
                         log.debug message.message, message.thrown
-                        break
+                        break;
                 }
             }
         }

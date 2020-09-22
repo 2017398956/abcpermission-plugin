@@ -1,11 +1,16 @@
 # abcpermission-plugin
 
-[![Release Version](https://img.shields.io/badge/release-1.4.0-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
+[![Release Version](https://img.shields.io/badge/release-1.5.0-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
 
 方便 [AbcPermission](https://github.com/2017398956/AbcPermission "AbcPermission") 接入的插件
 
 **更新日志：**
 
+- **1.5.0**  支持 kotlin 和 java 混编
+
+    如果在 kotlin 代码中使用了此插件，那么需要在
+    apply plugin: 'kotlin-kapt' 之后添加 apply plugin: 'abcpermission.plugin' 
+    顺序颠倒后将无法正常执行
 - **1.4.0**  update
 - **1.3.6**  支持 AndroidX
 
