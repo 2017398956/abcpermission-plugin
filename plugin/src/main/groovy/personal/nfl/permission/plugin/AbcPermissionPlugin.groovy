@@ -118,7 +118,7 @@ class AbcPermissionPlugin implements Plugin<Project> {
                                   "-d", dPath,
                                   "-classpath", classpath,
                                   "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
-            project.logger.error javacArgs
+            println("AbcPermission: aspect args is " + javacArgs)
             new Main().run(javacArgs, handler)
             File[] kotlinClassFiles = FileUtil.listFiles(kotlinInPath, true)
             File javacKotlinFile

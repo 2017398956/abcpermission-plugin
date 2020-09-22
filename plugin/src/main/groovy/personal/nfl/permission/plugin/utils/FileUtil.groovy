@@ -30,6 +30,7 @@ class FileUtil {
         }
         try {
             Files.copy(srcFile.toPath(), destFile.toPath())
+            println("AbcPermission: has copied file " + srcFile.absolutePath + " to " + destFile.absolutePath)
             return true
         } catch (Exception e) {
             e.printStackTrace()
@@ -40,8 +41,9 @@ class FileUtil {
     static boolean delete(File file) {
         if (file.exists()) {
             if (!file.delete()) {
-                throw new Exception("file cannot delete:" + file.getAbsolutePath())
+                throw new Exception("AbcPermission: file cannot delete:" + file.getAbsolutePath())
             }
+            println("AbcPermission: delete file " + file.absolutePath + " success")
             return true
         } else {
             return true
