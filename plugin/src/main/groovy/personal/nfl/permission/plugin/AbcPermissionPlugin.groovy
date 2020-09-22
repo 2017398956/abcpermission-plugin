@@ -26,11 +26,33 @@ class AbcPermissionPlugin implements Plugin<Project> {
             // apply plugin: 'kotlin-kapt' 之后添加 apply plugin: 'abcpermission.plugin'
             // 顺序颠倒后将无法正常运行
             annotationMethod = "kapt"
+            project.dependencies {
+                kapt("com.github.2017398956:AbcPermission:1.6.8") {
+                    exclude module: 'permissionSupport'
+                }
+            }
         } else {
             // 使用默认的 annotationProcessor
+            project.dependencies {
+                annotationProcessor("com.github.2017398956:AbcPermission:1.6.8") {
+                    exclude module: 'permissionSupport'
+                }
+            }
         }
 
-        project.dependencies.add("implementation",
+        project.dependencies {
+            api("com.github.2017398956:AbcPermission:1.6.8") {
+                exclude module: 'permissionAnnotation'
+                exclude module: 'permissionCompiler'
+            }
+            provided("com.github.2017398956:AbcPermission:1.6.8") {
+                exclude module: 'permissionSupport'
+                exclude module: 'permissionCompiler'
+            }
+
+        }
+
+        project.dependencies.add("api",
                 "com.github.2017398956:AbcPermission:1.6.8", {
             "exclude module: 'permissionAnnotation'"
             "exclude module: 'permissionCompiler'"
