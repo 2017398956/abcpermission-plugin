@@ -26,29 +26,8 @@ class AbcPermissionPlugin implements Plugin<Project> {
             // apply plugin: 'kotlin-kapt' 之后添加 apply plugin: 'abcpermission.plugin'
             // 顺序颠倒后将无法正常运行
             annotationMethod = "kapt"
-            project.dependencies {
-                kapt("com.github.2017398956:AbcPermission:1.6.9") {
-                    exclude module: 'permissionSupport'
-                }
-            }
         } else {
             // 使用默认的 annotationProcessor
-            project.dependencies {
-                annotationProcessor("com.github.2017398956:AbcPermission:1.6.9") {
-                    exclude module: 'permissionSupport'
-                }
-            }
-        }
-
-        project.dependencies {
-            implementation("com.github.2017398956:AbcPermission:1.6.9") {
-                exclude module: 'permissionAnnotation'
-                exclude module: 'permissionCompiler'
-            }
-            compileOnly("com.github.2017398956:AbcPermission:1.6.9") {
-                exclude module: 'permissionSupport'
-                exclude module: 'permissionCompiler'
-            }
         }
 
         project.dependencies.add("implementation",
@@ -66,14 +45,14 @@ class AbcPermissionPlugin implements Plugin<Project> {
             "exclude module: 'permissionSupport'"
             "exclude module: 'permissionCompiler'"
         })
-        // 获取编译版本
+        // 获取编译版本 (这里的结果是 1.6 待修复)
         if (project.hasProperty('android') && project.android != null) {
             if (project.android.hasProperty('compileOptions') && project.android.compileOptions != null) {
                 if (project.android.compileOptions.hasProperty('targetCompatibility') && project.android.compileOptions.targetCompatibility != null) {
-                    targetJDK = project.android.compileOptions.properties.get('targetCompatibility')
+                    // targetJDK = project.android.compileOptions.properties.get('targetCompatibility')
                 }
                 if (project.android.compileOptions.hasProperty('sourceCompatibility') && project.android.compileOptions.sourceCompatibility != null) {
-                    sourceJDK = project.android.compileOptions.properties.get('sourceCompatibility')
+                    // sourceJDK = project.android.compileOptions.properties.get('sourceCompatibility')
                 }
             }
 
