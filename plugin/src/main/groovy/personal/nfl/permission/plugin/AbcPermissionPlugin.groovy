@@ -11,7 +11,6 @@ import personal.nfl.permission.plugin.utils.FileUtil
 class AbcPermissionPlugin implements Plugin<Project> {
     private String sourceJDK = "1.8"
     private String targetJDK = "1.8"
-    private String aspectJVersion = "1.9.6"
     private String abcPermissionVersion = "1.7.1"
     /**
      * @param project 这里的 project 对应的引入该插件的 module ，如果需要获取根目录下 build.gradle
@@ -21,12 +20,6 @@ class AbcPermissionPlugin implements Plugin<Project> {
         // 这里会发生在 module 的 Configure project ：${moduleName} 阶段（编译前的配置阶段）
         // 且 对 build.gradle 的操作的环境都和代码的顺序有关，所以在获取变量时如果没注意顺序，则可能获取失败
         // 所以，sourceJDK 和 targetJDK 的获取应该放在 doFirst 中，而不应该直接获取
-
-        project.buildscript.repositories.mavenCentral()
-        project.buildscript.dependencies.add("classpath" ,
-                "org.aspectj:aspectjtools:${aspectJVersion}" , {})
-        project.buildscript.dependencies.add("classpath" ,
-                "org.aspectj:aspectjweaver:${aspectJVersion}" , {})
 
         project.repositories.maven {
             url 'https://jitpack.io'
