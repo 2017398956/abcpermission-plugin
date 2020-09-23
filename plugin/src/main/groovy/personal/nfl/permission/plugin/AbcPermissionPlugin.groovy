@@ -11,7 +11,7 @@ import personal.nfl.permission.plugin.utils.FileUtil
 class AbcPermissionPlugin implements Plugin<Project> {
     private String sourceJDK = "1.8"
     private String targetJDK = "1.8"
-    private String abcPermissionVersion = "1.7.0"
+    private String abcPermissionVersion = "1.7.1"
     /**
      * @param project 这里的 project 对应的引入该插件的 module ，如果需要获取根目录下 build.gradle
      * 中的信息，则需要通过 project.rootProject.XXX 来获取
@@ -54,6 +54,18 @@ class AbcPermissionPlugin implements Plugin<Project> {
             annotationMethod = "kapt"
         } else {
             // 使用默认的 annotationProcessor
+            project.rootProject.buildscript.configurations.each {
+                it.dependencies.each {
+                    // 如果引入了 kotlin ，这里自动为用户添加 kotlin 支持
+                    if ("org.jetbrains.kotlin".equals(it.group) && "kotlin-gradle-plugin".equals(it.name)) {
+                        if (project.plugins.findPlugin("kotlin-android") == null) {
+                            project.pluginManager.apply("kotlin-android")
+                        }
+                        project.pluginManager.apply("kotlin-kapt")
+                        annotationMethod = "kapt"
+                    }
+                }
+            }
         }
         project.dependencies.add(annotationMethod,
                 "com.github.2017398956:AbcPermission:${abcPermissionVersion}", {
@@ -84,7 +96,7 @@ class AbcPermissionPlugin implements Plugin<Project> {
         }
     }
 
-    private void doFirst(Task javaCompile){
+    private void doFirst(Task javaCompile) {
         javaCompile.doFirst {
             // 获取 jdk 的版本
             if (project.hasProperty('android') && project.android != null) {
@@ -123,7 +135,7 @@ class AbcPermissionPlugin implements Plugin<Project> {
                                   "-d", dPath,
                                   "-classpath", classpath,
                                   "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
-            // println(javacArgs)
+            println("AbcPermission: aspectj args's sourceCompatibility is " + sourceJDK + " and targetCompatibility is " + targetJDK)
             new Main().run(javacArgs, handler)
             File[] kotlinClassFiles = FileUtil.listFiles(kotlinInPath, true)
             File javacKotlinFile
