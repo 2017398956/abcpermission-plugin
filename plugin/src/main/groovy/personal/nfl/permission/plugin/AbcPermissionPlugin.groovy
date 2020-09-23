@@ -32,13 +32,6 @@ class AbcPermissionPlugin implements Plugin<Project> {
             url 'https://jitpack.io'
         }
 
-        project.buildscript.repositories
-
-        project.buildscript.dependencies {
-            classpath 'org.aspectj:aspectjtools:1.9.6'
-            classpath 'org.aspectj:aspectjweaver:1.9.6'
-        }
-
 //        project.dependencies{
 //            api("com.github.2017398956:AbcPermission:1.6.8") {
 //                exclude module: 'permissionAnnotation'
