@@ -9,15 +9,41 @@ import org.gradle.api.Task
 import personal.nfl.permission.plugin.utils.FileUtil
 
 class AbcPermissionPlugin implements Plugin<Project> {
-
     private String sourceJDK = "1.8"
     private String targetJDK = "1.8"
-
+    private String abcPermissionVersion = "1.7.0"
+    /**
+     * @param project 这里的 project 对应的引入该插件的 module ，如果需要获取根目录下 build.gradle
+     * 中的信息，则需要通过 project.rootProject.XXX 来获取
+     */
     void apply(Project project) {
-
+        // 这里会发生在 module 的 Configure project ：${moduleName} 阶段（编译前的配置阶段）
+        // 且 对 build.gradle 的操作的环境都和代码的顺序有关，所以在获取变量时如果没注意顺序，则可能获取失败
+        // 所以，sourceJDK 和 targetJDK 的获取应该放在 doFirst 中，而不应该直接获取
         project.repositories.maven {
             url 'https://jitpack.io'
         }
+
+//        project.dependencies{
+//            api("com.github.2017398956:AbcPermission:1.6.8") {
+//                exclude module: 'permissionAnnotation'
+//                exclude module: 'permissionCompiler'
+//            }
+//            provided("com.github.2017398956:AbcPermission:1.6.8") {
+//                exclude module: 'permissionSupport'
+//                exclude module: 'permissionCompiler'
+//            }
+//            kapt("com.github.2017398956:AbcPermission:1.6.8") {
+//                exclude module: 'permissionSupport'
+//            }
+//        }
+
+        project.dependencies.add("compileOnly",
+                "com.github.2017398956:AbcPermission:${abcPermissionVersion}", {
+            "exclude module: 'permissionSupport'"
+            "exclude module: 'permissionCompiler'"
+        })
+
         // 默认使用 java 的注解方式
         String annotationMethod = "annotationProcessor"
         if (project.plugins.findPlugin("kotlin-kapt") != null) {
@@ -29,46 +55,46 @@ class AbcPermissionPlugin implements Plugin<Project> {
         } else {
             // 使用默认的 annotationProcessor
         }
-
+        project.dependencies.add(annotationMethod,
+                "com.github.2017398956:AbcPermission:${abcPermissionVersion}", {
+            "exclude module: 'permissionSupport'"
+            "exclude module: 'permissionCompiler'"
+        })
         project.dependencies.add("implementation",
-                "com.github.2017398956:AbcPermission:1.6.9", {
+                "com.github.2017398956:AbcPermission:${abcPermissionVersion}", {
             "exclude module: 'permissionAnnotation'"
             "exclude module: 'permissionCompiler'"
         })
-        project.dependencies.add("compileOnly",
-                "com.github.2017398956:AbcPermission:1.6.9", {
-            "exclude module: 'permissionSupport'"
-            "exclude module: 'permissionCompiler'"
-        })
-        project.dependencies.add(annotationMethod,
-                "com.github.2017398956:AbcPermission:1.6.9", {
-            "exclude module: 'permissionSupport'"
-            "exclude module: 'permissionCompiler'"
-        })
-        // 获取编译版本 (这里的结果是 1.6 待修复)
-        if (project.hasProperty('android') && project.android != null) {
-            if (project.android.hasProperty('compileOptions') && project.android.compileOptions != null) {
-                if (project.android.compileOptions.hasProperty('targetCompatibility') && project.android.compileOptions.targetCompatibility != null) {
-                    // targetJDK = project.android.compileOptions.properties.get('targetCompatibility')
-                }
-                if (project.android.compileOptions.hasProperty('sourceCompatibility') && project.android.compileOptions.sourceCompatibility != null) {
-                    // sourceJDK = project.android.compileOptions.properties.get('sourceCompatibility')
-                }
-            }
-
-        }
 
         if (project.hasProperty('android') && project.android != null) {
             if (project.android.hasProperty('applicationVariants')
                     && project.android.applicationVariants != null) {
                 project.android.applicationVariants.all { variant ->
+                    doFirst(variant.getJavaCompileProvider().get())
                     doLast(variant.getJavaCompileProvider().get())
                 }
             }
             if (project.android.hasProperty('libraryVariants')
                     && project.android.libraryVariants != null) {
                 project.android.libraryVariants.all { variant ->
+                    doFirst(variant.getJavaCompileProvider().get())
                     doLast(variant.getJavaCompileProvider().get())
+                }
+            }
+        }
+    }
+
+    private void doFirst(Task javaCompile){
+        javaCompile.doFirst {
+            // 获取 jdk 的版本
+            if (project.hasProperty('android') && project.android != null) {
+                if (project.android.hasProperty('compileOptions') && project.android.compileOptions != null) {
+                    if (project.android.compileOptions.hasProperty('targetCompatibility') && project.android.compileOptions.targetCompatibility != null) {
+                        targetJDK = project.android.compileOptions.properties.get('targetCompatibility')
+                    }
+                    if (project.android.compileOptions.hasProperty('sourceCompatibility') && project.android.compileOptions.sourceCompatibility != null) {
+                        sourceJDK = project.android.compileOptions.properties.get('sourceCompatibility')
+                    }
                 }
             }
         }
@@ -97,7 +123,7 @@ class AbcPermissionPlugin implements Plugin<Project> {
                                   "-d", dPath,
                                   "-classpath", classpath,
                                   "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
-            println("AbcPermission: aspect args is " + javacArgs)
+            // println(javacArgs)
             new Main().run(javacArgs, handler)
             File[] kotlinClassFiles = FileUtil.listFiles(kotlinInPath, true)
             File javacKotlinFile
