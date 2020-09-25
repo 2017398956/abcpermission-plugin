@@ -38,5 +38,9 @@
     
 在需要的 module 中添加如下代码
     
+    // 如果在 kotlin 代码中使用了此插件，那么需要在
+    // apply plugin: 'kotlin-kapt' 之后添加 
+    apply plugin: 'AspectPlugin'
     apply plugin: 'abcpermission.plugin'
+    
     dependencies { api 'org.aspectj:aspectjrt:1.9.6'}
