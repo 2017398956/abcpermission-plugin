@@ -44,3 +44,59 @@
     apply plugin: 'abcpermission.plugin'
     
     dependencies { api 'org.aspectj:aspectjrt:1.9.6'}
+    
+在使用前记得添加 
+
+    // 建议在 application 添加
+    AbcPermission.install(context)
+    
+注解建议使用（其它的是老版本）
+
+    @GetPermissions4AndroidX
+
+插件中提供了一个默认的弹窗（这个弹窗是全局的，只需要设置一次），如果需要修改可以设置 GetPermissionListener （需要在权限申请之前）
+
+    AbcPermission.permissionListener = new AbcPermission.GetPermissionListener(){
+            /**
+             * 当用户不给权限且选择了不再提示后，会执行这个方法，比如打开 设置 界面
+             *
+             * @param activity 
+             * @param permissions 用户拒绝授予的权限
+             */
+                @Override
+                public void cannotRequestAgain(Activity activity, String[] permissions) {
+                
+            }
+
+		/**
+         * 为了程序不崩溃，被注解的方法在这里抛出异常,需要你自行处理
+         *
+         * @param throwable
+         */
+
+            @Override
+            public void exeException(Throwable throwable) {
+                
+            }
+        } ;
+        
+## 使用示例 ##
+
+配置好环境后只需要在方法前添加一个注解即可
+
+java 示例：
+
+    @GetPermissions4AndroidX(Manifest.permission.READ_CONTACTS)
+    private void test() {
+        Toast.makeText(this, "测试成功！！", Toast.LENGTH_SHORT).show();
+    }
+    
+kotlin 示例：
+
+    @GetPermissions4AndroidX(
+        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        android.Manifest.permission.CALL_PHONE
+    )
+    private void test() {
+        Toast.makeText(this, "测试成功！！", Toast.LENGTH_SHORT).show();
+    }
