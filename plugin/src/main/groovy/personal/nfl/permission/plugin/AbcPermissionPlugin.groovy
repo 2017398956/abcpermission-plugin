@@ -16,20 +16,13 @@ class AbcPermissionPlugin implements Plugin<Project> {
         // 这里会发生在 module 的 Configure project ：${moduleName} 阶段（编译前的配置阶段）
         // 且 对 build.gradle 的操作的环境都和代码的顺序有关，所以在获取变量时如果没注意顺序，则可能获取失败
         // 所以，sourceJDK 和 targetJDK 的获取应该放在 doFirst 中，而不应该直接获取
-        project.rootProject.buildscript {
-            repositories {
-                maven { url 'https://jitpack.io' }
-            }
-            dependencies {
-                classpath "com.github.2017398956:AspectPlugin:${aspectPluginVersion}"
-            }
+        if (project.plugins.getPlugin("AspectPlugin") == null){
+            project.pluginManager.apply("AspectPlugin")
         }
 
         project.repositories.maven {
             url 'https://jitpack.io'
         }
-
-        project.pluginManager.apply("AspectPlugin")
 
 //        project.dependencies{
 //            api("com.github.2017398956:AbcPermission:1.6.8") {
