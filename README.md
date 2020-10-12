@@ -1,11 +1,12 @@
 # abcpermission-plugin
 
-[![Release Version](https://img.shields.io/badge/release-1.7.1_5-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
+[![Release Version](https://img.shields.io/badge/release-1.7.1_6-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
 
 方便 [AbcPermission](https://github.com/2017398956/AbcPermission "AbcPermission") 接入的插件
 
 ## 更新日志 ##
 
+- **1.7.1_6**  解决 Linux 和 mac 编译出错的问题
 - **1.7.1_5**  接入方式更新
 - **1.5.7**  update abcpermission
 - **1.5.0**  支持 kotlin 和 java 混编
@@ -31,8 +32,8 @@
         }
         dependencies {
             ...
-            classpath 'com.github.2017398956:AspectPlugin:2.3'
-            classpath "com.github.2017398956:abcpermission-plugin:1.7.1_5"
+            classpath 'com.github.2017398956:AspectPlugin:2.4'
+            classpath "com.github.2017398956:abcpermission-plugin:1.7.1_6"
         }
     }
     
