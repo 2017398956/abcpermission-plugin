@@ -1,11 +1,11 @@
 # abcpermission-plugin
 
-[![Release Version](https://img.shields.io/badge/release-1.7.1_6-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
+[![Release Version](https://img.shields.io/badge/release-1.7.2-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
 
 方便 [AbcPermission](https://github.com/2017398956/AbcPermission "AbcPermission") 接入的插件
 
 ## 更新日志 ##
-
+- **1.7.2**  支持AGP7.0.2
 - **1.7.1_6**  解决 Linux 和 mac 编译出错的问题
 - **1.7.1_5**  接入方式更新
 - **1.5.7**  update abcpermission
@@ -32,8 +32,7 @@
         }
         dependencies {
             ...
-            classpath 'com.github.2017398956:AspectPlugin:2.4'
-            classpath "com.github.2017398956:abcpermission-plugin:1.7.1_6"
+            classpath "com.github.2017398956:abcpermission-plugin:1.7.2"
         }
     }
     
@@ -41,7 +40,6 @@
     
     // 如果在 kotlin 代码中使用了此插件，那么需要在
     // apply plugin: 'kotlin-kapt' 之后添加 
-    apply plugin: 'AspectPlugin'
     apply plugin: 'abcpermission.plugin'
     
     dependencies { api 'org.aspectj:aspectjrt:1.9.6'}
