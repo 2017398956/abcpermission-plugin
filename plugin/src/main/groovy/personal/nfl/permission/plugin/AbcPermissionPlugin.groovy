@@ -7,7 +7,7 @@ import org.gradle.api.Project
 class AbcPermissionPlugin implements Plugin<Project> {
 
     private String abcPermissionVersion = "1.7.2_2"
-    private String aspectPluginVersion = "2.4"
+    private String aspectPluginVersion = "2.5.1"
     /**
      * @param project 这里的 project 对应的引入该插件的 module ，如果需要获取根目录下 build.gradle
      * 中的信息，则需要通过 project.rootProject.XXX 来获取

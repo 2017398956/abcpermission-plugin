@@ -1,6 +1,6 @@
 # abcpermission-plugin
 
-[![Release Version](https://img.shields.io/badge/release-1.7.2-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
+[![Release Version](https://img.shields.io/badge/release-1.7.2_1-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
 
 方便 [AbcPermission](https://github.com/2017398956/AbcPermission "AbcPermission") 接入的插件
 
@@ -32,7 +32,7 @@
         }
         dependencies {
             ...
-            classpath "com.github.2017398956:abcpermission-plugin:1.7.2"
+            classpath "com.github.2017398956:abcpermission-plugin:1.7.2_1"
         }
     }
     
