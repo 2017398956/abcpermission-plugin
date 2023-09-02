@@ -1,11 +1,11 @@
 # abcpermission-plugin
 
-[![Release Version](https://img.shields.io/badge/release-1.7.2_3-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
+[![Release Version](https://img.shields.io/badge/release-1.7.2_3_1-green.svg)](https://github.com/2017398956/abcpermission-plugin/releases)
 
 方便 [AbcPermission](https://github.com/2017398956/AbcPermission "AbcPermission") 接入的插件
 
 ## 更新日志 ##
-- **1.7.2_3**  修复 bug
+- **1.7.2_3_1**  修复 bug
 - **1.7.2_1**  支持AGP8.0
 - **1.7.2**  支持AGP7.0.2
 - **1.7.1_6**  解决 Linux 和 mac 编译出错的问题

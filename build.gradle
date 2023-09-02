@@ -1,13 +1,21 @@
 apply plugin: 'maven-publish'
+apply plugin: 'groovy'
+apply plugin: 'java'
 group='com.github.2017398956'
+version='1.7.2_3_1'
 buildscript {
 
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
           // classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
+}
+
+repositories {
+    mavenCentral()
 }
 
 publishing {
@@ -19,15 +27,16 @@ publishing {
             // You can then customize attributes of the publication as shown below.
             groupId = 'com.github.2017398956'
             artifactId = 'abcpermission-plugin'
+            from components.java
             // version = '1.0'
         }
     }
 
-//    repositories {
-//        maven {
-//            name = 'permissionSupport'
-//            // url = layout.buildDirectory.dir("repo")
-//            url = "../repo"
-//        }
-//    }
+    repositories {
+        maven {
+            name = 'abcpermission-plugin'
+            // url = layout.buildDirectory.dir("repo")
+            url = "./repo"
+        }
+    }
 }
