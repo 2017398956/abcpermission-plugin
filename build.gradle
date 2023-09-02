@@ -1,21 +1,28 @@
-apply plugin: 'maven-publish'
-apply plugin: 'groovy'
-apply plugin: 'java'
+plugins {
+    id 'maven-publish'
+    id 'groovy'
+    id 'java'
+}
+
 group='com.github.2017398956'
 version='1.7.2_3_1'
-buildscript {
-
-    repositories {
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-          // classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-    }
-}
 
 repositories {
     mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.groovy:groovy:4.0.14'
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'org.aspectj:aspectjtools:1.9.6'
+    implementation 'org.aspectj:aspectjweaver:1.9.6'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 publishing {
